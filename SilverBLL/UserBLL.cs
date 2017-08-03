@@ -42,24 +42,9 @@ namespace SilverBLL
             return UserDAL.DeleteUserByID(id);
         }
 
-        public User getUserByPartialName(string partialName)
-        {
-            return UserDAL.getUserByPartialName(partialName);
-        }
-
         public List<User> ListUsersByPartialName(string partialName)
         {
             return UserDAL.ListUsersByPartialName(partialName);
-        }
-
-        public User getUserByPartialNickname(string partialNickname)
-        {
-            return UserDAL.getUserByPartialNickname(partialNickname);
-        }
-
-        public List<User> ListUsersByPartialNickname(string partialNickname)
-        {
-            return UserDAL.ListUsersByPartialNickname(partialNickname);
         }
 
         public List<User> ListUsers()

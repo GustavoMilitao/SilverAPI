@@ -44,7 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BankingAccountDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="EscortDAL.cs" />
     <Compile Include="UserDAL.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SilverDAL
 {
-    public class UserDAL
+    public class EscortDAL
     {
         static string connectionString;
         static SqlConnection connection;
@@ -23,7 +23,7 @@ namespace SilverDAL
 
         static string SQL_INSERIR = @"
 
-INSERT INTO Users
+INSERT INTO Escort
            (Name
            ,Address
            ,City
@@ -35,6 +35,7 @@ INSERT INTO Users
            ,Phonenumber
            ,Nickname
            ,Password
+           ,Description
            ,Email
            ,Reg_Date)
      OUTPUT INSERTED.ID
@@ -50,6 +51,7 @@ INSERT INTO Users
            ,@Phonenumber
            ,@Nickname
            ,CONVERT(BINARY, @Password)
+           ,@Description    
            ,@Email
            ,@Reg_Date)
 ";
@@ -59,7 +61,7 @@ INSERT INTO Users
         #region SQL UPDATE
 
         static string SQL_UPDATE = @"
-            UPDATE Users
+            UPDATE Escort
             SET  Name = @Name
                 ,Address = @Address
                 ,City = @City
@@ -71,6 +73,7 @@ INSERT INTO Users
                 ,Phonenumber = @Phonenumber
                 ,Nickname = @Nickname
                 ,Password = CONVERT(BINARY,@Password)
+                ,Description = @Description
                 ,Email = @Email
                 ,Reg_Date = @Reg_Date
             WHERE ID = @ID
@@ -80,9 +83,9 @@ INSERT INTO Users
 
         #endregion
 
-        #region SQL GET USER BY ID
+        #region SQL GET Escort BY ID
 
-        static string SQL_GET_USER_BY_ID = @"
+        static string SQL_GET_ESCORT_BY_ID = @"
         SELECT
             ID
            ,Name
@@ -96,17 +99,18 @@ INSERT INTO Users
            ,Phonenumber
            ,Nickname
            ,ISNULL(CONVERT(VARCHAR,Password),'') Password
+           ,Description
            ,Email
            ,Reg_Date
-        FROM Users
+        FROM Escort
         WHERE ID = @ID
         ";
 
         #endregion
 
-        #region GET USER BY PARTIAL NAME
+        #region GET Escort BY PARTIAL NAME
 
-        static string SQL_GET_USER_BY_PARTIAL_NAME = @"
+        static string SQL_GET_ESCORT_BY_PARTIAL_NAME = @"
         SELECT
             ID
            ,Name
@@ -120,17 +124,18 @@ INSERT INTO Users
            ,Phonenumber
            ,Nickname
            ,ISNULL(CONVERT(VARCHAR,Password),'') Password
+           ,Description
            ,Email
            ,Reg_Date
-        FROM Users
+        FROM Escort
         WHERE Name LIKE @Name OR Nickname LIKE @Nickname
         ";
 
         #endregion
 
-        #region GET USER BY PARTIAL NICKNAME
+        #region GET Escort BY PARTIAL NICKNAME
 
-        static string SQL_GET_USER_BY_PARTIAL_NICKNAME = @"
+        static string SQL_GET_ESCORT_BY_PARTIAL_NICKNAME = @"
         SELECT
             ID
            ,Name
@@ -144,17 +149,18 @@ INSERT INTO Users
            ,Phonenumber
            ,Nickname
            ,ISNULL(CONVERT(VARCHAR,Password),'') Password
+           ,Description
            ,Email
            ,Reg_Date
-        FROM Users
+        FROM Escort
         WHERE Nickname LIKE @Nickname
         ";
 
         #endregion
 
-        #region GET USERS
+        #region GET Escort
 
-        static string SQL_GET_USERS = @"
+        static string SQL_GET_ESCORT = @"
             SELECT
             ID
            ,Name
@@ -168,97 +174,100 @@ INSERT INTO Users
            ,Phonenumber
            ,Nickname
            ,ISNULL(CONVERT(VARCHAR,Password),'') Password
+           ,Description
            ,Email
            ,Reg_Date
-        FROM Users
+        FROM Escort
 ";
 
         #endregion
 
-        #region DELETE USER BY ID
+        #region DELETE Escort BY ID
 
-        static string DELETE_USER_BY_ID = @"
+        static string DELETE_ESCORT_BY_ID = @"
 
-            DELETE FROM Users 
+            DELETE FROM Escort 
             WHERE ID = @ID
 ";
 
         #endregion
 
         #endregion
-        public UserDAL()
+        public EscortDAL()
         {
             connectionString = ConfigurationManager.AppSettings["connectionStringSilver"];
             connection = new SqlConnection(connectionString);
             connection.Open();
         }
 
-        public int InsertUser(User user)
+        public int InsertEscort(Escort escort)
         {
             DynamicParameters parameters = new DynamicParameters();
-            parameters.Add("@Name", user.Name, DbType.AnsiString);
-            parameters.Add("@Address", user.Address, DbType.AnsiString);
-            parameters.Add("@City", user.City, DbType.AnsiString);
-            parameters.Add("@State", user.State, DbType.AnsiString);
-            parameters.Add("@Addresscode", user.Addresscode, DbType.AnsiString);
-            parameters.Add("@Country", user.Country, DbType.AnsiString);
-            parameters.Add("@DDI", user.DDI, DbType.AnsiString);
-            parameters.Add("@DDD", user.DDD, DbType.AnsiString);
-            parameters.Add("@Phonenumber", user.Phonenumber, DbType.AnsiString);
-            parameters.Add("@Nickname", user.Nickname, DbType.AnsiString);
-            parameters.Add("@Password", user.Password, DbType.AnsiStringFixedLength);
-            parameters.Add("@Email", user.Email, DbType.AnsiString);
+            parameters.Add("@Name", escort.Name, DbType.AnsiString);
+            parameters.Add("@Address", escort.Address, DbType.AnsiString);
+            parameters.Add("@City", escort.City, DbType.AnsiString);
+            parameters.Add("@State", escort.State, DbType.AnsiString);
+            parameters.Add("@Addresscode", escort.Addresscode, DbType.AnsiString);
+            parameters.Add("@Country", escort.Country, DbType.AnsiString);
+            parameters.Add("@DDI", escort.DDI, DbType.AnsiString);
+            parameters.Add("@DDD", escort.DDD, DbType.AnsiString);
+            parameters.Add("@Phonenumber", escort.Phonenumber, DbType.AnsiString);
+            parameters.Add("@Nickname", escort.Nickname, DbType.AnsiString);
+            parameters.Add("@Password", escort.Password, DbType.AnsiStringFixedLength);
+            parameters.Add("@Description", escort.Description, DbType.AnsiString);
+            parameters.Add("@Email", escort.Email, DbType.AnsiString);
             parameters.Add("@Reg_Date", DateTime.Now, DbType.DateTime);
 
             return (int) SqlMapper.ExecuteScalar(connection, SQL_INSERIR, parameters);
         }
 
-        public bool UpdateUser(User user)
+        public bool UpdateEscort(Escort escort)
         {
             DynamicParameters parameters = new DynamicParameters();
-            parameters.Add("@Name", user.Name, DbType.AnsiString);
-            parameters.Add("@Address", user.Address, DbType.AnsiString);
-            parameters.Add("@City", user.City, DbType.AnsiString);
-            parameters.Add("@State", user.State, DbType.AnsiString);
-            parameters.Add("@Addresscode", user.Addresscode, DbType.AnsiString);
-            parameters.Add("@Country", user.Country, DbType.AnsiString);
-            parameters.Add("@DDI", user.DDI, DbType.AnsiString);
-            parameters.Add("@DDD", user.DDD, DbType.AnsiString);
-            parameters.Add("@Phonenumber", user.Phonenumber, DbType.AnsiString);
-            parameters.Add("@Nickname", user.Nickname, DbType.AnsiString);
-            parameters.Add("@Password", user.Password, DbType.AnsiStringFixedLength);
-            parameters.Add("@Email", user.Email, DbType.AnsiString);
+            parameters.Add("@Name", escort.Name, DbType.AnsiString);
+            parameters.Add("@Address", escort.Address, DbType.AnsiString);
+            parameters.Add("@City", escort.City, DbType.AnsiString);
+            parameters.Add("@State", escort.State, DbType.AnsiString);
+            parameters.Add("@Addresscode", escort.Addresscode, DbType.AnsiString);
+            parameters.Add("@Country", escort.Country, DbType.AnsiString);
+            parameters.Add("@DDI", escort.DDI, DbType.AnsiString);
+            parameters.Add("@DDD", escort.DDD, DbType.AnsiString);
+            parameters.Add("@Phonenumber", escort.Phonenumber, DbType.AnsiString);
+            parameters.Add("@Nickname", escort.Nickname, DbType.AnsiString);
+            parameters.Add("@Password", escort.Password, DbType.AnsiStringFixedLength);
+            parameters.Add("@Description", escort.Description, DbType.AnsiString);
+            parameters.Add("@Email", escort.Email, DbType.AnsiString);
             parameters.Add("@Reg_Date", DateTime.Now, DbType.DateTime);
-            parameters.Add("@ID", user.ID, DbType.Int32);
+            parameters.Add("@ID", escort.ID, DbType.Int32);
 
             return SqlMapper.Execute(connection, SQL_UPDATE, parameters) > 0;
         }
 
-        public User getUserByID(int id)
+        public Escort getEscortByID(int id)
         {
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@ID", id, DbType.Int32);
-            return SqlMapper.Query<User>(connection, SQL_GET_USER_BY_ID, parameters).FirstOrDefault();
+            return SqlMapper.Query<Escort>(connection, SQL_GET_ESCORT_BY_ID, parameters).FirstOrDefault();
         }
 
-        public bool DeleteUserByID(int id)
+        public bool DeleteEscortByID(int id)
         {
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@ID", id, DbType.Int32);
-            return SqlMapper.Execute(connection, DELETE_USER_BY_ID, parameters) > 0;
+            return SqlMapper.Execute(connection, DELETE_ESCORT_BY_ID, parameters) > 0;
         }
 
-        public List<User> ListUsersByPartialName(string partialName)
+        public List<Escort> ListEscortsByPartialName(string partialName)
         {
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@Name", "%" + partialName + "%", DbType.AnsiString);
             parameters.Add("@Nickname", "%" + partialName + "%", DbType.AnsiString);
-            return SqlMapper.Query<User>(connection, SQL_GET_USER_BY_PARTIAL_NAME, parameters).ToList();
+            return SqlMapper.Query<Escort>(connection, SQL_GET_ESCORT_BY_PARTIAL_NAME, parameters).ToList();
         }
 
-        public List<User> ListUsers()
+        public List<Escort> ListEscorts()
         {
-            return SqlMapper.Query<User>(connection, SQL_GET_USERS).ToList();
+            return SqlMapper.Query<Escort>(connection, SQL_GET_ESCORT).ToList();
         }
     }
 }
