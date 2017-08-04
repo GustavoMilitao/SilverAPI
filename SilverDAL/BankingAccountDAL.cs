@@ -49,7 +49,7 @@ INSERT INTO Banking_Account
         static string SQL_UPDATE = @"
             UPDATE Banking_Account
             SET 
-               ,ID_Escort = @ID_Escort
+                ID_Escort = @ID_Escort
                ,Bankcode = @Bankcode
                ,Bankname = @Bankname
                ,Agency = @Agency
