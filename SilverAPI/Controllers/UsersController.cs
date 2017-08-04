@@ -26,6 +26,18 @@ namespace SilverAPI.Controllers
             }
         }
 
+
+        private MeetingBLL meetingBLL;
+
+        public MeetingBLL MeetingBLL
+        {
+            get
+            {
+                if (meetingBLL == null)
+                    meetingBLL = new MeetingBLL();
+                return meetingBLL;
+            }
+        }
         // GET api/values
         public JsonResult<List<User>> Get()
         {
@@ -66,6 +78,14 @@ namespace SilverAPI.Controllers
         public Object Delete(int id)
         {
             return new { success = UserBLL.DeleteUserByID(id) };
+        }
+
+        [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("users/{userID}/meetings")]
+        public JsonResult<List<Meeting>> Meetings(int userID)
+        {
+            JsonSerializerSettings serializerSettings = new JsonSerializerSettings { Formatting = Formatting.Indented };
+            return Json(MeetingBLL.ListMeetingByUserID(userID), serializerSettings);
         }
     }
 }

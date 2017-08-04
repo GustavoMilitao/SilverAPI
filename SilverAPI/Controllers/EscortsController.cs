@@ -26,6 +26,31 @@ namespace SilverAPI.Controllers
             }
         }
 
+        private MeetingBLL meetingBLL;
+
+        public MeetingBLL MeetingBLL
+        {
+            get
+            {
+                if (meetingBLL == null)
+                    meetingBLL = new MeetingBLL();
+                return meetingBLL;
+            }
+        }
+
+        private TimePriceBLL timePriceBLL;
+
+        public TimePriceBLL TimePriceBLL
+        {
+            get
+            {
+                if (timePriceBLL == null)
+                    timePriceBLL = new TimePriceBLL();
+                return timePriceBLL;
+            }
+        }
+
+
         // GET api/values
         public JsonResult<List<Escort>> Get()
         {
@@ -66,6 +91,22 @@ namespace SilverAPI.Controllers
         public Object Delete(int id)
         {
             return new { success = EscortBLL.DeleteEscortByID(id) };
+        }
+
+        [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("escorts/{escortID}/meetings")]
+        public JsonResult<List<Meeting>> Meetings(int escortID)
+        {
+            JsonSerializerSettings serializerSettings = new JsonSerializerSettings { Formatting = Formatting.Indented };
+            return Json(MeetingBLL.ListMeetingByEscortID(escortID), serializerSettings);
+        }
+
+        [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("escorts/{escortID}/timeprices")]
+        public JsonResult<List<TimePrice>> TimePrices(int escortID)
+        {
+            JsonSerializerSettings serializerSettings = new JsonSerializerSettings { Formatting = Formatting.Indented };
+            return Json(TimePriceBLL.ListTimePriceByEscortID(escortID), serializerSettings);
         }
     }
 }

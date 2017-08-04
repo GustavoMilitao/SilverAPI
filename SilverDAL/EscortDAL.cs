@@ -75,7 +75,6 @@ INSERT INTO Escort
                 ,Password = CONVERT(BINARY,@Password)
                 ,Description = @Description
                 ,Email = @Email
-                ,Reg_Date = @Reg_Date
             WHERE ID = @ID
 
 ";
@@ -216,7 +215,6 @@ INSERT INTO Escort
             parameters.Add("@Password", escort.Password, DbType.AnsiStringFixedLength);
             parameters.Add("@Description", escort.Description, DbType.AnsiString);
             parameters.Add("@Email", escort.Email, DbType.AnsiString);
-            parameters.Add("@Reg_Date", DateTime.Now, DbType.DateTime);
 
             return (int) SqlMapper.ExecuteScalar(connection, SQL_INSERIR, parameters);
         }

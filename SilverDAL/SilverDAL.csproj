@@ -45,8 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BankingAccountDAL.cs" />
+    <Compile Include="TimePriceDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EscortDAL.cs" />
+    <Compile Include="MeetingDAL.cs" />
     <Compile Include="UserDAL.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -55,7 +55,6 @@ INSERT INTO Banking_Account
                ,Agency = @Agency
                ,Current_Account = @Current_Account
                ,Digit = @Digit    
-               ,Reg_Date = @Reg_Date
             WHERE ID = @ID
 
 ";
@@ -143,7 +142,6 @@ INSERT INTO Banking_Account
             parameters.Add("@Agency", bankingAccount.Agency, DbType.AnsiString);
             parameters.Add("@Current_Account", bankingAccount.Current_Account, DbType.AnsiString);
             parameters.Add("@Digit", bankingAccount.Digit, DbType.AnsiString);
-            parameters.Add("@Reg_Date", DateTime.Now, DbType.DateTime);
 
             return (int) SqlMapper.ExecuteScalar(connection, SQL_INSERIR, parameters);
         }
@@ -157,7 +155,6 @@ INSERT INTO Banking_Account
             parameters.Add("@Agency", bankingAccount.Agency, DbType.AnsiString);
             parameters.Add("@Current_Account", bankingAccount.Current_Account, DbType.AnsiString);
             parameters.Add("@Digit", bankingAccount.Digit, DbType.AnsiString);
-            parameters.Add("@Reg_Date", DateTime.Now, DbType.DateTime);
             parameters.Add("@ID", bankingAccount.ID, DbType.Int32);
 
             return SqlMapper.Execute(connection, SQL_UPDATE, parameters) > 0;

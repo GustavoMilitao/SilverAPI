@@ -41,8 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BankingAccountBLL.cs" />
+    <Compile Include="TimePriceBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EscortBLL.cs" />
+    <Compile Include="MeetingBLL.cs" />
     <Compile Include="UserBLL.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -72,7 +72,6 @@ INSERT INTO Users
                 ,Nickname = @Nickname
                 ,Password = CONVERT(BINARY,@Password)
                 ,Email = @Email
-                ,Reg_Date = @Reg_Date
             WHERE ID = @ID
 
 ";
@@ -208,7 +207,6 @@ INSERT INTO Users
             parameters.Add("@Nickname", user.Nickname, DbType.AnsiString);
             parameters.Add("@Password", user.Password, DbType.AnsiStringFixedLength);
             parameters.Add("@Email", user.Email, DbType.AnsiString);
-            parameters.Add("@Reg_Date", DateTime.Now, DbType.DateTime);
 
             return (int) SqlMapper.ExecuteScalar(connection, SQL_INSERIR, parameters);
         }
@@ -228,7 +226,6 @@ INSERT INTO Users
             parameters.Add("@Nickname", user.Nickname, DbType.AnsiString);
             parameters.Add("@Password", user.Password, DbType.AnsiStringFixedLength);
             parameters.Add("@Email", user.Email, DbType.AnsiString);
-            parameters.Add("@Reg_Date", DateTime.Now, DbType.DateTime);
             parameters.Add("@ID", user.ID, DbType.Int32);
 
             return SqlMapper.Execute(connection, SQL_UPDATE, parameters) > 0;
