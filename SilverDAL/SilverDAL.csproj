@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BankingAccountDAL.cs" />
+    <Compile Include="PaymentMethodDAL.cs" />
     <Compile Include="PaymentDAL.cs" />
     <Compile Include="TimePriceDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
