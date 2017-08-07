@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SilverDAL
 {
-    public class TimePriceDAL
+    public class PaymentDAL
     {
         static string connectionString;
         static SqlConnection connection;
@@ -20,23 +20,22 @@ namespace SilverDAL
         #region SQL
 
         static string SQL_TABLE_FIELDS = @"
-            ID_Escort
-           ,Time_In_Hour
-           ,Price
+            ID_Pay_Method
+           ,ID_Meeting
+           ,Value
            ,Reg_Date";
 
         static string SQL_TABLE_METADATA = @"
-            @ID_Escort
-           ,@Time_In_Hour
-           ,@Price
-           ,@Reg_Date
-";
+            @ID_Pay_Method
+           ,@ID_Meeting
+           ,@Value
+           ,@Reg_Date";
 
         #region SQL_INSERIR
 
         static string SQL_INSERIR = @"
 
-INSERT INTO TimePrice
+INSERT INTO Payment
            ("+
             SQL_TABLE_FIELDS+
             @")
@@ -52,11 +51,12 @@ INSERT INTO TimePrice
         #region SQL UPDATE
 
         static string SQL_UPDATE = @"
-            UPDATE TimePrice
+            UPDATE Payment
             SET  
-            ID_Escort               = @ID_Escort            
-           ,Time_In_Hour     = @Time_In_Hour  
-           ,Price             = @Price          
+
+            ID_Pay_Method=@ID_Pay_Method
+           ,ID_Meeting=@ID_Meeting
+           ,Value=@Value
             WHERE ID = @ID
 ";
 
@@ -65,27 +65,27 @@ INSERT INTO TimePrice
 
         #region SQL GET TIME PRICE BY ID
 
-        static string SQL_GET_TIME_PRICE_BY_ID = @"
+        static string SQL_GET_PAYMENT_BY_ID = @"
         SELECT
             ID,"
             +
             SQL_TABLE_FIELDS+
             @"
-        FROM TimePrice
+        FROM Payment
         WHERE ID = @ID
         ";
 
         #endregion
 
-        #region GET TIME_PRICE BY ID USER OR SCORT
+        #region GET PAYMENT BY ID USER OR SCORT
 
-        static string SQL_GET_TIME_PRICE_BY_ESCORT_ID = @"
+        static string SQL_GET_PAYMENT_BY_ESCORT_ID = @"
         SELECT
             ID,"
             +
             SQL_TABLE_FIELDS +
             @"
-        FROM TimePrice
+        FROM Payment
         WHERE ID_Escort = @ID
         ";
 
@@ -93,81 +93,81 @@ INSERT INTO TimePrice
 
         #region GET TIME PRICES
 
-        static string SQL_GET_TIME_PRICES = @"
+        static string SQL_GET_PAYMENTS = @"
             SELECT
             ID,"
             +
             SQL_TABLE_FIELDS +
             @"
-        FROM TimePrice
+        FROM Payment
 ";
 
         #endregion
 
-        #region DELETE TIME_PRICE BY ID
+        #region DELETE PAYMENT BY ID
 
-        static string DELETE_TIME_PRICE_BY_ID = @"
+        static string DELETE_PAYMENT_BY_ID = @"
 
-            DELETE FROM TimePrice 
+            DELETE FROM Payment 
             WHERE ID = @ID
 ";
 
         #endregion
 
         #endregion
-        public TimePriceDAL()
+        public PaymentDAL()
         {
             connectionString = ConfigurationManager.AppSettings["connectionStringSilver"];
             connection = new SqlConnection(connectionString);
             connection.Open();
         }
 
-        public int InsertTimePrice(TimePrice timePrice)
+        public int InsertPayment(Payment payment)
         {
             DynamicParameters parameters = new DynamicParameters();
-            parameters.Add("@ID_Escort", timePrice.ID_Escort, DbType.Int32);
-            parameters.Add("@Time_In_Hour", timePrice.Time_In_Hour, DbType.Int32);
-            parameters.Add("@Price", timePrice.Price, DbType.Decimal);
+            parameters.Add("@ID_Pay_Method", payment.ID_Pay_Method, DbType.Int32);
+            parameters.Add("@ID_Meeting", payment.ID_Meeting, DbType.Int32);
+            parameters.Add("@Value", payment.Value, DbType.Decimal);
             parameters.Add("@Reg_Date", DateTime.Now, DbType.DateTime);
 
             return (int) SqlMapper.ExecuteScalar(connection, SQL_INSERIR, parameters);
         }
 
-        public bool UpdateTimePrice(TimePrice timePrice)
+        public bool UpdatePayment(Payment payment)
         {
             DynamicParameters parameters = new DynamicParameters();
-            parameters.Add("@ID_Escort", timePrice.ID_Escort, DbType.Int32);
-            parameters.Add("@Time_In_Hour", timePrice.Time_In_Hour, DbType.Int32);
-            parameters.Add("@Price", timePrice.Price, DbType.Decimal);
-            parameters.Add("@ID", timePrice.ID, DbType.Int32);
+            parameters.Add("@ID_Pay_Method", payment.ID_Pay_Method, DbType.Int32);
+            parameters.Add("@ID_Meeting", payment.ID_Meeting, DbType.Int32);
+            parameters.Add("@Value", payment.Value, DbType.Decimal);
+            parameters.Add("@ID", payment.ID, DbType.Int32);
 
             return SqlMapper.Execute(connection, SQL_UPDATE, parameters) > 0;
         }
 
-        public TimePrice getTimePriceByID(int id)
+        public Payment getPaymentByID(int id)
         {
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@ID", id, DbType.Int32);
-            return SqlMapper.Query<TimePrice>(connection, SQL_GET_TIME_PRICE_BY_ID, parameters).FirstOrDefault();
+            return SqlMapper.Query<Payment>(connection, SQL_GET_PAYMENT_BY_ID, parameters).FirstOrDefault();
         }
 
-        public bool DeleteTimePriceByID(int id)
+        public bool DeletePaymentByID(int id)
         {
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@ID", id, DbType.Int32);
-            return SqlMapper.Execute(connection, DELETE_TIME_PRICE_BY_ID, parameters) > 0;
+            return SqlMapper.Execute(connection, DELETE_PAYMENT_BY_ID, parameters) > 0;
         }
 
-        public List<TimePrice> ListTimePriceByEscortID(int escortID)
+        public List<Payment> ListPaymentByEscortID(int escortID)
         {
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@ID", escortID, DbType.Int32);
-            return SqlMapper.Query<TimePrice>(connection, SQL_GET_TIME_PRICE_BY_ESCORT_ID, parameters).ToList();
+            return SqlMapper.Query<Payment>(connection, SQL_GET_PAYMENT_BY_ESCORT_ID, parameters).ToList();
         }
 
-        public List<TimePrice> ListTimePrices()
+        public List<Payment> ListPayments()
         {
-            return SqlMapper.Query<TimePrice>(connection, SQL_GET_TIME_PRICES).ToList();
+            return SqlMapper.Query<Payment>(connection, SQL_GET_PAYMENTS).ToList();
         }
     }
 }

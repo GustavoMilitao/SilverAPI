@@ -215,7 +215,7 @@ INSERT INTO Escort
             parameters.Add("@Password", escort.Password, DbType.AnsiStringFixedLength);
             parameters.Add("@Description", escort.Description, DbType.AnsiString);
             parameters.Add("@Email", escort.Email, DbType.AnsiString);
-
+            parameters.Add("@Reg_Date", DateTime.Now, DbType.DateTime);
             return (int) SqlMapper.ExecuteScalar(connection, SQL_INSERIR, parameters);
         }
 
@@ -235,7 +235,6 @@ INSERT INTO Escort
             parameters.Add("@Password", escort.Password, DbType.AnsiStringFixedLength);
             parameters.Add("@Description", escort.Description, DbType.AnsiString);
             parameters.Add("@Email", escort.Email, DbType.AnsiString);
-            parameters.Add("@Reg_Date", DateTime.Now, DbType.DateTime);
             parameters.Add("@ID", escort.ID, DbType.Int32);
 
             return SqlMapper.Execute(connection, SQL_UPDATE, parameters) > 0;

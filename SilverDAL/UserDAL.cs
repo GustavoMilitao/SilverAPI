@@ -207,6 +207,7 @@ INSERT INTO Users
             parameters.Add("@Nickname", user.Nickname, DbType.AnsiString);
             parameters.Add("@Password", user.Password, DbType.AnsiStringFixedLength);
             parameters.Add("@Email", user.Email, DbType.AnsiString);
+            parameters.Add("@Reg_Date", DateTime.Now, DbType.DateTime);
 
             return (int) SqlMapper.ExecuteScalar(connection, SQL_INSERIR, parameters);
         }
